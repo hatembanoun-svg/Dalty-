@@ -1,0 +1,22 @@
+rules_version = '2';
+
+// ⚠️ ملاحظة أمان مهمة:
+// هذه القواعد مفتوحة عمداً لتسريع مرحلة الإطلاق التجريبي والحصول على أول عملاء.
+// قبل أي إطلاق فعلي/تجاري واسع، يجب تقييد الكتابة (خصوصاً لوحة الإدارة)
+// عبر Firebase Authentication بدل الاعتماد على كلمة مرور جافاسكريبت فقط.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    match /clinics/{clinicId}/appointments/{appointmentId} {
+      allow read: if true;   // القراءة عامة: تحتاجها شاشة التلفاز وحالة الطابور العامة
+      allow create: if true; // الحجز مفتوح لأي زائر
+      allow update: if true; // ⚠️ مؤقت - يلزم تقييده بمصادقة موظفين لاحقاً
+      allow delete: if true; // ⚠️ مؤقت - يلزم تقييده بمصادقة موظفين لاحقاً
+    }
+
+    match /clinics/{clinicId}/counters/{date} {
+      allow read: if true;
+      allow write: if true;  // ⚠️ مؤقت - نفس الملاحظة أعلاه
+    }
+  }
+}
